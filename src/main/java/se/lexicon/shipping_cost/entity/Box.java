@@ -1,8 +1,14 @@
 package se.lexicon.shipping_cost.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.Valid;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -10,28 +16,36 @@ import java.time.LocalDateTime;
 @Entity
 public class Box {
     @Id
-    String id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(nullable = false, updatable = false)
+    private String id;
     @Size(min = 4, max = 20, message = "name length should be between 4 and 20")
     @Valid
-    String name;
+    @Column(nullable = false, length = 100)
+    private String name;
     @NotNull(message = "country should not be null")
     @Valid
-    String country;
+    @Column(nullable = false, length = 100)
+    private String country;
     @NotNull(message = "type should not be null")
     @Valid
-    String type;
-
-    double cost;
-    @Size(min = 1, message = "weight should not be less than 1")
+    @Column(nullable = false, length = 30)
+    private String type;
+    @Column(nullable = false, length = 30)
+    private double cost;
+    @Min(value = 1, message = "weight should not be less than 1")
     @Valid
-    double weight;
+    @Column(nullable = false, length = 30)
+    private double weight;
     @NotNull(message = "weight type should not be null")
     @Valid
-    String weightType;
+    @Column(nullable = false, length = 100)
+    private String weightType;
 
-    LocalDateTime createDate;
+    private LocalDateTime createDate;
 
-    boolean status;
+    private boolean status;
 
     public String getId() {
         return id;
